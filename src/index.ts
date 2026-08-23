@@ -14,6 +14,10 @@ app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'running', timestamp: new Date().toISOString() })
 })
 
+app.get('/webhook', (req: Request, res: Response) => {
+  res.json({ status: 'webhook ready' })
+})
+
 // omnidimension webhook — receives all tool calls mid-call
 app.post('/webhook', async (req: Request, res: Response) => {
   const body = req.body
