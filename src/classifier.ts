@@ -1,4 +1,4 @@
-import { sendWhatsApp } from './whatsapp'
+import { sendWhatsApp, sendWhatsAppImage } from './whatsapp'
 
 // in-memory call log keyed by call id
 const callLog: Record<string, any> = {}
@@ -39,8 +39,9 @@ export async function handleScheduleCallback(params: any): Promise<string> {
 export async function handleEndCall(params: any): Promise<string> {
   const yourName = process.env.YOUR_NAME || 'your name'
   const yourPhone = process.env.YOUR_PHONE || 'your number'
+  const archImageUrl = process.env.ARCH_IMAGE_URL || ''
+  const resumeUrl = process.env.RESUME_URL || ''
 
-  // llm writes the message, we just add signature
   const body = params?.summary || ''
 
   const message =
@@ -49,18 +50,33 @@ export async function handleEndCall(params: any): Promise<string> {
     `elevatebox, hyderabad\n` +
     `${yourPhone}`
 
+  // send text message
   sendWhatsApp(process.env.YOUR_WHATSAPP!, message).catch(console.error)
   sendWhatsApp(process.env.TARGET_NUMBER!, message).catch(console.error)
+
+  // send architecture image
+  if (archImageUrl) {
+    sendWhatsAppImage(process.env.YOUR_WHATSAPP!, archImageUrl, 'architecture diagram').catch(console.error)
+    sendWhatsAppImage(process.env.TARGET_NUMBER!, archImageUrl, 'architecture diagram').catch(console.error)
+  }
+
+  // send resume
+  if (resumeUrl) {
+    sendWhatsAppImage(process.env.YOUR_WHATSAPP!, resumeUrl, 'resume').catch(console.error)
+    sendWhatsAppImage(process.env.TARGET_NUMBER!, resumeUrl, 'resume').catch(console.error)
+  }
 
   return 'post-call summary sent.'
 }
 
 function buildMidCallMessage(business: string, reason: string): string {
+  const yourPhone = process.env.PHONE || 'your number'
   return (
     `hi, this is priya from elevatebox.\n\n` +
-    `we were just speaking about building an e-commerce website for ${business}.\n\n` +
-    `${reason ? `i noticed ${reason} and wanted to reach out right away.\n\n` : ''}` +
-    `i will send you our full details after our call.\n\n` +
-    `priya, elevatebox`
+    `we were just speaking and i wanted to reach out right away.\n\n` +
+    `${reason}\n\n` +
+    `i will send you everything after our call.\n\n` +
+    `priya, elevatebox hyderabad\n` +
+    `${yourPhone}`
   )
 }
