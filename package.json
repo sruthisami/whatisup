@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "start": "npx ts-node src/index.ts"
-},
+    "dev": "npx ts-node src/index.ts"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sruthisami/whatisup.git"
@@ -22,8 +22,10 @@
     "@types/node": "^26.2.0",
     "axios": "^1.19.0",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
     "ts-node": "^10.9.2",
-    "typescript": "^7.0.2"
+    "typescript": "^5.3.3"
   }
 }
