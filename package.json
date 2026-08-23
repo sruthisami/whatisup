@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx ts-node src/index.ts"
-  },
+  "start": "npx ts-node src/index.ts",
+  "dev": "npx ts-node src/index.ts"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sruthisami/whatisup.git"
