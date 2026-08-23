@@ -1,0 +1,29 @@
+{
+  "name": "whatup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  "start": "npx ts-node src/index.ts"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sruthisami/whatisup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sruthisami/whatisup/issues"
+  },
+  "homepage": "https://github.com/sruthisami/whatisup#readme",
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.2.0",
+    "axios": "^1.19.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^7.0.2"
+  }
+}
