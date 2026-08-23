@@ -37,42 +37,19 @@ export async function handleScheduleCallback(params: any): Promise<string> {
 }
 
 export async function handleEndCall(params: any): Promise<string> {
-  const summary = params?.summary || ''
-  const intent = params?.final_intent || 'warm'
-  const budget = params?.budget || 'not discussed'
-  const timeline = params?.timeline || 'not discussed'
-  const products = params?.products || 'not mentioned'
-  const features = params?.features_requested || 'general'
-  const callbackBooked = params?.callback_booked || false
-  const callbackTime = params?.callback_time || ''
-
   const yourName = process.env.YOUR_NAME || 'your name'
   const yourPhone = process.env.YOUR_PHONE || 'your number'
 
-  const callbackLine = callbackBooked
-    ? `callback booked: ${callbackTime}`
-    : 'no callback scheduled'
+  // llm writes the message, we just add signature
+  const body = params?.summary || ''
 
   const message =
-    `elevatebox call summary\n` +
-    `----------------------\n` +
-    `status: ${intent}\n` +
-    `business: ${products}\n` +
-    `budget: ${budget}\n` +
-    `timeline: ${timeline}\n` +
-    `features: ${features}\n` +
-    `${callbackLine}\n` +
-    `----------------------\n` +
-    `what they said:\n` +
-    `${summary}\n` +
-    `----------------------\n` +
-    `built by ${yourName}\n` +
+    `${body}\n\n` +
+    `${yourName}\n` +
+    `elevatebox, hyderabad\n` +
     `${yourPhone}`
 
-  // send to yourself
   sendWhatsApp(process.env.YOUR_WHATSAPP!, message).catch(console.error)
-
-  // send to evaluator
   sendWhatsApp(process.env.TARGET_NUMBER!, message).catch(console.error)
 
   return 'post-call summary sent.'
