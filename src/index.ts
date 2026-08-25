@@ -7,9 +7,9 @@ dotenv.config()
 
 const app = express()
 
-app.use('/public', express.static('public'))
 app.use(express.json())
 app.use(cors())
+app.use('/public', express.static('assets'))
 
 const PORT = process.env.PORT || 3000
 
