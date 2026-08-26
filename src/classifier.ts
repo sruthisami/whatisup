@@ -38,7 +38,7 @@ export async function handleScheduleCallback(params: any): Promise<string> {
   console.log(`raw: ${rawTime} | parsed ist: ${parsed}`)
 
   const confirm =
-    `hi, this is priya from elevatebox.\n\n` +
+    `hi, this is priya from elvoice.\n\n` +
     `confirmed your callback for ${rawTime}.\n\n` +
     `talk soon.`
 
@@ -53,12 +53,11 @@ export async function handleEndCall(params: any): Promise<string> {
   const archImageUrl = process.env.ARCH_IMAGE_URL || ''
   const resumeUrl = process.env.RESUME_URL || ''
 
-  const body = params?.summary || ''
-
+  const body = params?.followup_message || params?.summary || ''
   const message =
     `${body}\n\n` +
     `${yourName}\n` +
-    `elevatebox, hyderabad\n` +
+    `elvoice, hyderabad\n` +
     `${yourPhone}`
 
   console.log('=== end call ===')
@@ -102,7 +101,7 @@ function buildMidCallMessage(business: string, reason: string): string {
     `we were just speaking and i wanted to reach out right away.\n\n` +
     `${reason}\n\n` +
     `i will send you everything after our call.\n\n` +
-    `priya, elevatebox hyderabad\n` +
+    `priya, elvoice hyderabad\n` +
     `${yourPhone}`
   )
 }
