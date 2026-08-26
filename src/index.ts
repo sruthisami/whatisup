@@ -22,6 +22,12 @@ app.get('/webhook', (req: Request, res: Response) => {
   res.json({ status: 'webhook ready' })
 })
 
+app.post('/post-call', (req: Request, res: Response) => {
+  console.log('=== POST-CALL PAYLOAD ===')
+  console.log(JSON.stringify(req.body, null, 2))
+  res.json({ received: true })
+})
+
 // omnidimension webhook — receives all tool calls mid-call
 app.post('/webhook', async (req: Request, res: Response) => {
   const body = req.body
