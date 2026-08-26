@@ -10,7 +10,20 @@ function val(raw: any): string | null {
   return s
 }
 
+let invocationCount = 0
+const processedCallIds = new Set<string>()
+
 export async function handlePostCall(body: any): Promise<void> {
+  invocationCount++
+  const callId = body?.call_id
+  console.log(`=== POST-CALL invocation #${invocationCount} for call_id ${callId} ===`)
+
+  if (callId && processedCallIds.has(callId)) {
+    console.log(`=== duplicate post-call for call_id ${callId} — skipping ===`)
+    return
+  }
+  if (callId) processedCallIds.add(callId)
+
   const report = body?.call_report || {}
   const vars = report?.extracted_variables || {}
 
