@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import { handleClassifyIntent, handleScheduleCallback, handleEndCall } from './classifier'
+import { handlePostCall } from './postcall'
 
 dotenv.config()
 
@@ -22,19 +23,6 @@ app.get('/webhook', (req: Request, res: Response) => {
   res.json({ status: 'webhook ready' })
 })
 
-let lastPostCall: any = null
-
-app.post('/post-call', (req: Request, res: Response) => {
-  lastPostCall = { receivedAt: new Date().toISOString(), body: req.body }
-  console.log('=== POST-CALL PAYLOAD ===')
-  console.log(JSON.stringify(req.body, null, 2))
-  res.json({ received: true })
-})
-
-app.get('/post-call/last', (req: Request, res: Response) => {
-  res.json(lastPostCall || { message: 'nothing received yet' })
-})
-
 // omnidimension webhook — receives all tool calls mid-call
 app.post('/webhook', async (req: Request, res: Response) => {
   const body = req.body
@@ -51,9 +39,24 @@ app.post('/webhook', async (req: Request, res: Response) => {
       await handleScheduleCallback(params)
     } else if (toolName === 'endCall') {
       await handleEndCall(params)
+    } else {
+      console.log(`=== unknown tool: ${toolName} ===`)
     }
   } catch (error) {
     console.error('webhook error:', error)
+  }
+})
+
+// omnidimension post-call delivery — fires on call completion,
+// independent of whether the model remembered to call a tool
+app.post('/post-call', async (req: Request, res: Response) => {
+  // acknowledge immediately, same reasoning as the tool webhook
+  res.json({ received: true })
+
+  try {
+    await handlePostCall(req.body)
+  } catch (error) {
+    console.error('post-call error:', error)
   }
 })
 
