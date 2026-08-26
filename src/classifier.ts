@@ -101,11 +101,10 @@ export async function handleEndCall(params: any): Promise<string> {
 function buildMidCallMessage(business: string, reason: string): string {
   const yourPhone = process.env.YOUR_PHONE || 'your number'
   return (
-    `hi, this is priya from elevatebox.\n\n` +
-    `we were just speaking and i wanted to reach out right away.\n\n` +
-    `${reason}\n\n` +
-    `i will send you everything after our call.\n\n` +
-    `priya, elvoice hyderabad\n` +
+    `hi, this is Sruthi from elvoice.\n\n` +
+    `we're still on the call, but i wanted to send this across right away so you have it.\n\n` +
+    `i'll put together the details for your ${business} and send everything over once we're done.\n\n` +
+    `priya, elevatebox hyderabad\n` +
     `${yourPhone}`
   )
 }
