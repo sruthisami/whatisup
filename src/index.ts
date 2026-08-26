@@ -22,10 +22,17 @@ app.get('/webhook', (req: Request, res: Response) => {
   res.json({ status: 'webhook ready' })
 })
 
+let lastPostCall: any = null
+
 app.post('/post-call', (req: Request, res: Response) => {
+  lastPostCall = { receivedAt: new Date().toISOString(), body: req.body }
   console.log('=== POST-CALL PAYLOAD ===')
   console.log(JSON.stringify(req.body, null, 2))
   res.json({ received: true })
+})
+
+app.get('/post-call/last', (req: Request, res: Response) => {
+  res.json(lastPostCall || { message: 'nothing received yet' })
 })
 
 // omnidimension webhook — receives all tool calls mid-call
