@@ -41,14 +41,7 @@ export async function handleScheduleCallback(params: any): Promise<string> {
   console.log('=== schedule callback ===')
   console.log(`raw: ${rawTime} | parsed ist: ${parsed}`)
 
-  const confirm =
-    `hi, this is priya from elvoice.\n\n` +
-    `confirmed your callback for ${rawTime}.\n\n` +
-    `talk soon.`
-
-  sendWhatsApp(process.env.TARGET_NUMBER, confirm).catch(console.error)
-
-  return `callback booked for ${parsed}. confirmation sent.`
+  return `callback booked for ${parsed}.`
 }
 
 export async function handleEndCall(params: any): Promise<string> {
@@ -58,8 +51,17 @@ export async function handleEndCall(params: any): Promise<string> {
   const resumeUrl = process.env.RESUME_URL || ''
 
   const body = params?.followup_message || params?.summary || ''
+  const callbackBooked = (params?.callback_booked || '').toLowerCase()
+  const callbackTime = params?.callback_time || ''
+
+  const callbackLine =
+    callbackBooked === 'yes' && callbackTime
+      ? `just to confirm — i'll call you ${callbackTime}.\n\n`
+      : ''
+
   const message =
     `${body}\n\n` +
+    callbackLine +
     `${yourName}\n` +
     `elvoice, hyderabad\n` +
     `${yourPhone}`
@@ -112,7 +114,7 @@ function buildMidCallMessage(business: string, reason: string): string {
 function buildColdInfoMessage(): string {
   const yourPhone = process.env.YOUR_PHONE || 'your number'
   return (
-    `hi, this is priya from elevatebox.\n\n` +
+    `hi, this is Sruthi from elvoice.\n\n` +
     `thanks for your time on the call. we build custom e-commerce websites for businesses across india.\n\n` +
     `keeping this here in case you need it later — reach out anytime.\n\n` +
     `priya, elevatebox hyderabad\n` +
