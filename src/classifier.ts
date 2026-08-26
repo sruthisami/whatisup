@@ -87,7 +87,7 @@ export async function handleEndCall(params: any): Promise<string> {
     sendWhatsAppDocument(
       process.env.TARGET_NUMBER,
       resumeUrl,
-      'Vaishnavi_Resume.pdf',
+      'Sruthi_Resume.pdf',
       'my resume'
     ).catch(console.error)
   }
