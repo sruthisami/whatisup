@@ -47,15 +47,20 @@ export async function handlePostCall(body: any): Promise<void> {
     return
   }
 
-  const message = buildFollowUp({
-    businessType,
-    onlinePresence,
-    productCount,
-    featuresNeeded,
-    budgetRange,
-    timeline,
-    callbackRaw,
-  })
+    const llmMessage = val(vars.followup_message)
+
+  const message = llmMessage
+    ? `${llmMessage}\n\n${[process.env.YOUR_NAME || 'Sruthi', 'elvoice, hyderabad', process.env.YOUR_PHONE || ''].filter(Boolean).join('\n')}`
+    : buildFollowUp({
+        businessType,
+        onlinePresence,
+        productCount,
+        featuresNeeded,
+        budgetRange,
+        timeline,
+        callbackRaw,
+      })
+      
 
   console.log('--- follow-up message ---')
   console.log(message)
@@ -102,7 +107,7 @@ function buildFollowUp(p: FollowUpParts): string {
 
   const lines: string[] = []
 
-  lines.push(`hi, this is priya from elevatebox.`)
+  lines.push(`hi, this is sruthi from elvoice.`)
   lines.push(`thanks for taking the time to speak with me just now.`)
 
   // recap built only from what was actually captured
@@ -131,11 +136,7 @@ function buildFollowUp(p: FollowUpParts): string {
     lines.push(`i'll call you back ${p.callbackRaw} as agreed.`)
   }
 
-  lines.push(
-    `i've attached a diagram of how i built this system, and my resume.`
-  )
-
-  lines.push([yourName, `elevatebox, hyderabad`, yourPhone].filter(Boolean).join('\n'))
+  lines.push([yourName, `elvoice, hyderabad`, yourPhone].filter(Boolean).join('\n'))
 
   return lines.join('\n\n')
 }
