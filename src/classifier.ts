@@ -1,15 +1,10 @@
 import { sendWhatsApp, sendWhatsAppImage, sendWhatsAppDocument } from './whatsapp'
 
-// in-memory call log keyed by call id
-const callLog: Record<string, any> = {}
-
 export async function handleClassifyIntent(params: any): Promise<string> {
   const intent = params?.intent || 'warm'
   const reason = params?.reason || ''
   const business = params?.business_type || 'their business'
-  const callId = params?.call_id || Date.now().toString()
-
-  callLog[callId] = { intent, reason, business, ...params }
+  
 
   console.log('=== classify intent ===')
   console.log(`intent: ${intent} | reason: ${reason}`)
