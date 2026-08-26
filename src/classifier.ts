@@ -14,17 +14,26 @@ export async function handleClassifyIntent(params: any): Promise<string> {
   console.log('=== classify intent ===')
   console.log(`intent: ${intent} | reason: ${reason}`)
 
-  if (intent === 'hot') {
+    if (intent === 'hot') {
     const message = buildMidCallMessage(business, reason)
 
-    console.log('=== mid-call whatsapp trigger ===')
+    console.log('=== mid-call whatsapp trigger (hot) ===')
     console.log(`message:\n${message}`)
 
-    // fire-and-forget so the tool call returns to OmniDimension immediately
-    // and the voice conversation is never blocked waiting on WhatsApp
     sendWhatsApp(process.env.TARGET_NUMBER, message).catch(console.error)
 
     return `classified as hot. whatsapp firing to customer.`
+  }
+
+  if (intent === 'cold') {
+    const message = buildColdInfoMessage()
+
+    console.log('=== mid-call whatsapp trigger (cold) ===')
+    console.log(`message:\n${message}`)
+
+    sendWhatsApp(process.env.TARGET_NUMBER, message).catch(console.error)
+
+    return `classified as cold. info message sent.`
   }
 
   return `classified as ${intent}. logged.`
@@ -102,6 +111,17 @@ function buildMidCallMessage(business: string, reason: string): string {
     `${reason}\n\n` +
     `i will send you everything after our call.\n\n` +
     `priya, elvoice hyderabad\n` +
+    `${yourPhone}`
+  )
+}
+
+function buildColdInfoMessage(): string {
+  const yourPhone = process.env.YOUR_PHONE || 'your number'
+  return (
+    `hi, this is priya from elevatebox.\n\n` +
+    `thanks for your time on the call. we build custom e-commerce websites for businesses across india.\n\n` +
+    `keeping this here in case you need it later — reach out anytime.\n\n` +
+    `priya, elevatebox hyderabad\n` +
     `${yourPhone}`
   )
 }
