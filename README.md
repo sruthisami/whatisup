@@ -1,4 +1,4 @@
-# Elvoice — AI Voice Lead Qualification
+# Elvoice - AI Voice Lead Qualification
 
 An outbound voice agent that calls a lead, qualifies them in English, Hindi or Telugu, classifies intent, fires a WhatsApp mid-call on high intent, books a callback from spoken time, and follows up afterwards with the conversation context, a resume and an architecture diagram.
 
@@ -23,14 +23,19 @@ An outbound voice agent that calls a lead, qualifies them in English, Hindi or T
 
 **After the call.** OmniDimension POSTs the transcript to webhook `/post-call`. 
 
+## Architecture
+
+![Elvoice Architecture](assets/architecture-v3.png)
+
 ## Files
 
-```
+```text
 src/index.ts       routes, instant acknowledgement
 src/classifier.ts  mid-call tool handlers
 src/postcall.ts    post-call delivery
 src/whatsapp.ts    Meta Cloud API client
 assets/            architecture diagram, resume
+
 ```
 
 ## What I'd change next
